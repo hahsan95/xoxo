@@ -1,5 +1,5 @@
 import inquirer from 'inquirer'
-
+import {streak} from './game/ai'
 import gameReducer, {move} from './game'
 import {createStore} from 'redux'
 
@@ -23,6 +23,12 @@ const getInput = player => async () => {
   }])
   const [row=0, col=0] = ans.coord.split(/[,\s+]/).map(x => +x)
   game.dispatch(move(turn, [row, col]))
+  let result = streak(game.getState().board)
+  if (result === 'Tie') {
+    console.log('Game results in a tie!')
+  } else if (result !== 'Ongoing') {
+    console.log(`The winner is ${result}!`)
+  }
 }
 
 // Create the store
